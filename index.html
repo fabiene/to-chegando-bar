@@ -664,7 +664,7 @@ function enviarPedido() {
   const totalFinal = subtotal + taxa;
 
   mensagem += `*Total pedido:* R$ ${subtotal.toFixed(2)}%0A`;
-  mensagem += `*Taxa de serviço (10%):* R$ ${taxa.toFixed(2)}%0A`;
+  mensagem += `*Taxa de serviço opcional(10%):* R$ ${taxa.toFixed(2)}%0A`;
   mensagem += `*Total com taxa:* R$ ${totalFinal.toFixed(2)}%0A%0AEnviado via cardápio online.`;
 
   window.open(`https://wa.me/${numero}?text=${mensagem}`, "_blank");
