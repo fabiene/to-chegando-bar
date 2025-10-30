@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tô Chegando Bar</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<style>
+
+/*TAMANHO CAMPO TÍTULO CATEGORIA*/
+  .categoria h2 {
+    cursor: pointer;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .itens {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease, padding 0.3s ease;
+    padding: 0 10px;
+  }
+
+  .itens.show {
+    max-height: 1000px; /* altura suficiente para todos os itens */
+    padding: 10px;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background: #000;
+    margin: 0;
+    padding: 15px;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: auto;
+    background: #111;
+    color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.4);
+  }
+  
+/*ESPAÇO ENTRE LOGO E TÍTULO*/
+  h1 {
+    color: #ffcc00;
+    margin-top: 10px;
+    font-size: 1.8em;
+  }
+  
+/*LOGO TÔ CHEGANDO*/
+  img.logo {
+    width: 100px;
+    max-width: 25vw;
+  }
+/*CAIXAS DE TEXTO*/
+  input[type="text"] {
+    width: 95%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 5px;
+    font-size: 1em;
+  }
+/*BOTÕES DE + E -*/
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #25d366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+/*DISTÂNCIA ENTRE TÍTULOS DE CATEGORIA*/
+  .categoria {
+    margin-top: 25px;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+
+  /* Itens do cardápio */
+  .item {
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.4);
+    margin: 10px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    gap: 10px; /*DISTÂNCIA ENTRE A DESCRIÇÃO E A IMAGEM*/
+    
+  }
+/*TAMANHO DA IMAGEM DOS ITENS*/
+  .item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .item-info {
+    flex: 1;
+  }
+  
+  .campo-sabor {
+    display: block;
+    margin-top: 6px;
+    padding: 5px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #222;
+    color: #fff;
+  }
+  
+  .item-controles {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  #resumo {
+    background: #1b1b1b;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25d366;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    font-size: 30px;
+    text-decoration: none;
+  }
+
+  /* RESPONSIVIDADE */
+  @media (max-width: 400px) {
+    .item {
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .item img {
+      width: 60px;
+      height: 60px;
+    }
+
+    .item-controles {
+      width: 100%;
+      justify-content: flex-end;
+      margin-top: 5px;
+      }
+        }
+</style>
+
+</head>
+
+<body>
+  <div class="container">
+    <!-- LOGO -->
+    <div style="text-align:center; margin-bottom:15px;">
+      <img src="/home/fabiene/Documentos/Pessoais/Tô Chegando/Logo2.png" alt="Logo Tô Chegando Bar" class="logo">
+      <h1>Tô Chegando Bar</h1>
+      <p style="color:#ddd;">🍻 Escolha seus itens e envie o pedido pelo WhatsApp!</p>
+    </div>
+
+    <!-- CAMPO NOME -->
+    <label style="display:block; margin-bottom:10px;">
+      <span> Nome do cliente:</span>
+      <input type="text" id="nomeCliente" placeholder="Digite seu nome">
+    </label>
+
+    <!-- MENU -->
+    <div id="menu"></div>
+
+    <hr style="border-color:#ff0000; margin:20px 0;">
+
+    <!-- GORJETA -->
+    <input type="checkbox" id="gorjeta" checked style="display:none;">
+        
+    <!-- RESUMO -->
+    <div id="resumo" style="display:none;">
+      <h3 style="color:#ffcc00;">🧾 Resumo do Pedido</h3>
+      <div id="itensResumo"></div>
+      <hr style="border-color:#444; margin:10px 0;">
+      <p>💵 Total pedido: <strong>R$ <span id="subtotal">0.00</span></strong></p>
+      <p>💰 Valor taxa de serviço (10%): <strong>R$ <span id="taxa">0.00</span></strong> (opcional)</p>
+      <p>✅ Total com taxa de serviço: <strong style="color:#ffcc00;">R$ <span id="totalFinal">0.00</span></strong></p>
+    </div>
+
+    <!-- BOTÃO ENVIAR -->
+    <button onclick="enviarPedido()">📲 Enviar pedido via WhatsApp</button>
+  </div>
+
+  <!-- BOTÃO FLUTUANTE WHATSAPP -->
+  <a href="https://wa.me/5524992139401" target="_blank" class="whatsapp-float">💬</a>
+
+<script>
+const numero = "5524992139401";
+
+// ========== PRODUTOS ==========
+const produtos = [
+  //CERVEJAS
+
+    { nome: "Amstel Litrão", preco: 14, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_amstel.png" },
+    { nome: "Amstel 600ml", preco: 11, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_amstel.png" },
+    { nome: "Amstel Latão 473ml", preco: 8, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_amstel.png" },
+   
+    { nome: "Antarctica Litrão", preco: 14, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_antarctica.png" },
+    { nome: "Antarctica 600ml", preco: 11, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_antarctica.png" },
+    { nome: "Antarctica 300ml", preco: 5, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_antarctica.png" },
+    { nome: "Antarctica Latão 473ml", preco: 8, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_antarctica.png" },
+    
+    { nome: "Bohemia 300ml", preco: 5, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_bohemia.jpg" },
+    { nome: "Bohemia Latão 473ml", preco: 8, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_bohemia.jpg" },
+    
+    { nome: "Brahma Litrão", preco: 14, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_brahma.png" },
+    { nome: "Brahma 600ml", preco: 11, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_brahma.png" },
+    { nome: "Brahma 300ml", preco: 5, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_brahma.png" },
+    { nome: "Brahma Latão 473ml", preco: 8, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_brahma.png" },
+    
+    { nome: "Budweiser Litrão", preco: 14, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_budweiser.png" },
+    { nome: "Budweiser 600ml", preco: 11, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_budweiser.png" },
+    { nome: "Budweiser 300ml", preco: 5, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_budweiser.png" },
+    { nome: "Budweiser Latão 473ml", preco: 8, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_budweiser.png" },
+    { nome: "Budweiser Long Neck", preco: 9, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_budweiser.png" }, 
+    
+    { nome: "Caracu", preco: 11, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_caracu.jpg" },
+    
+    { nome: "Corona Latão 473ml", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_corona.png" },
+    { nome: "Corona Lonk Neck", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_corona.png" },
+    { nome: "Corona Zero Alcool", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_corona_zero.png" },
+
+    
+    { nome: "Heineken Zero Alcool", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_hein_zero.png" },
+    { nome: "Heineken 600ml", preco: 16, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_heineken.png" },
+    { nome: "Heineken Latão 473ml", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_heineken.png" },
+    { nome: "Heineken Log Neck", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_heineken.png" },
+    
+    { nome: "Imperio 300ml", preco: 5, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_imperio.jpg" },
+    { nome: "Imperio 600ml", preco: 11, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_imperio.jpg" },
+    
+    { nome: "Itaipava 300ml", preco: 5, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_itaipava.png" },
+    
+    { nome: "Lokal Litrão", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_lokal.png" },
+    { nome: "Lokal 600ml", preco: 7, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_lokal.png" },
+    { nome: "Lokal Latão 473ml", preco: 5, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_lokal.png" },
+    
+    { nome: "Malzbier", preco: 9, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_brah_malz.jpg" },
+        
+    { nome: "Original Litrão", preco: 15, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_ant_original.png" },
+    { nome: "Original 600ml", preco: 13, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_ant_original.png" },
+    { nome: "Original 300ml", preco: 5, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_ant_original.png" },
+    { nome: "Original Latão 473ml", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_ant_original.png" },
+    
+    { nome: "Spaten 600ml", preco: 14, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_spaten.jpg" },
+    { nome: "Spaten Long Neck", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_spaten.jpg" },
+    { nome: "Spaten Latão 473ml", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_spaten.jpg" },
+    
+    { nome: "Stella Artois 600ml", preco: 14, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_stella.png" },
+    { nome: "Stella Artois Long Neck", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_stella.png" },
+    { nome: "Stella Artois Latão 473ml", preco: 10, categoria: "Cervejas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cervejas/logo_stella.png" },
+    
+//REFRIGERANTES, SUCOS E ÁGUAS
+
+    { nome: "Refrigerante 200ml", preco: 3, categoria: "Refrigerantes", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/refrigerantes/refri_pet_200.jpeg", pedirSabor: true },
+    { nome: "Refrigerante 350ml", preco: 6, categoria: "Refrigerantes", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/refrigerantes/refri_lata.png", pedirSabor: true },
+    { nome: "Refrigerante 600ml", preco: 8, categoria: "Refrigerantes", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/refrigerantes/refri_600.jpeg", pedirSabor: true },
+    { nome: "Tônica 350ml", preco: 6, categoria: "Refrigerantes", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/refrigerantes/logo_tonica.jpeg" },
+    
+    { nome: "Refrigerante 2 litros (exceto Coca Cola)", preco: 12, categoria: "Refrigerantes", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/refrigerantes/refri_2_ambev.jpg", pedirSabor: true },
+    { nome: "Coca Cola 2 litros", preco: 15, categoria: "Refrigerantes", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/refrigerantes/logo_coca.jpeg" },
+    
+    { nome: "Guaraviton", preco: 5, categoria: "Sucos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sucos/logo_guaraviton.png" },
+    { nome: "H2OH 500ml", preco: 7, categoria: "Sucos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sucos/logo_h2oh.png" },
+    { nome: "Suco lata", preco: 7, categoria: "Sucos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sucos/logo_suco_lata.jpg", pedirSabor: true },
+    { nome: "Refresco copo", preco: 2, categoria: "Sucos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sucos/logo_ativ.jpg", pedirSabor: true },
+    
+    { nome: "Água sem gás 500ml", preco: 3.00, categoria: "Águas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/aguas/agua.jpg" },
+    { nome: "Água com gás 500ml", preco: 4.00, categoria: "Águas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/aguas/agua.jpg" },
+    { nome: "Água sem gás 1,5l", preco: 5.00, categoria: "Águas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/aguas/agua.jpg" },
+    { nome: "Água de Coco caixinha", preco: 5.00, categoria: "Águas", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/aguas/agua_coco.jpeg" },
+    
+//DESTILADOS
+    { nome: "51 - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/logo_51.png" },
+    { nome: "Alcatrão - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/logo_alcatrao.png" },  
+    { nome: "Amarula - cálice", preco: 10.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/marula.png" },
+    { nome: "Bananinha - dose", preco: 6.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/bananinha.png" },
+    { nome: "Campari - dose", preco: 12.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/campari.jpg" },
+    { nome: "Canelinha - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Caninha da Roça Pet 500ml", preco: 7, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/caninha.png" },
+    { nome: "Catuaba Selvagem - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/catuaba.png" },
+    { nome: "Contini - dose", preco: 7.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/contini.png" },
+    { nome: "Domecq - tirinho", preco: 4.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/domecq.jpg" },
+    { nome: "Domecq - dose", preco: 7.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/domecq.jpg" },
+    { nome: "Dona Vânia - tirinho", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/vania.jpeg" },
+    { nome: "Dona Vânia - dose", preco: 9.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/vania.jpeg" },
+    { nome: "Dreher - tirinho", preco: 3.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/dreher.png" },
+    { nome: "Dreher - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/dreher.png" }, 
+    { nome: "Fogo Paulista - tirinho", preco: 4.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/paulista.webp" },
+    { nome: "Fogo Paulista - dose", preco: 7.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/paulista.webp" },
+    { nome: "Gim - dose", preco: 10.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Jeropiga - dose", preco: 6.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/jeropiga.webp" },
+    { nome: "Jurubeba - dose", preco: 6.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/jurubeba.jpeg" },
+    { nome: "Mel - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Menta - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Paratudo - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/paratudo.webp" },
+    { nome: "Rum Montilla - dose", preco: 7.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/rum.jpeg" },
+    { nome: "Seleta - tirinho", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/seleta.png" },
+    { nome: "Seleta - dose", preco: 9.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/seleta.png" },
+    { nome: "Smirnoff - tirinho", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/smirnoff.jpg" },
+    { nome: "Smirnoff - dose", preco: 10.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/smirnoff.jpg" },
+    { nome: "Steinhager - tirinho", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/stein.jpg" },
+    { nome: "Steinhager - dose", preco: 10.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/stein.jpg" },
+    { nome: "Tequila - dose", preco: 15.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Trassado - dose", preco: 5.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Whisky Ballantines (8 anos) - tirinho", preco: 18.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/ball.jpg" },
+    { nome: "Whisky Ballantines (8 anos) - dose", preco: 10.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/ball.jpg" },
+    { nome: "Whisky Red Label (8 anos) - tirinho", preco: 18.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/red.webp" },
+    { nome: "Whisky Red Label (8 anos) - dose", preco: 10.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/red.webp" },
+    { nome: "Whisky White Horse (8 anos) - tirinho", preco: 18.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/white.webp" },
+    { nome: "Whisky White Horse (8 anos) - dose", preco: 10.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/white.webp" },
+    { nome: "Ypioca - tirinho", preco: 3.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/ypioca.webp" },
+    { nome: "Ypioca - dose", preco: 6.00, categoria: "Destilados", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/destilados/ypioca.webp" },
+    
+//ENERGÉTICOS
+    { nome: "Red Bull Lata", preco: 13.00, categoria: "Energéticos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/energeticos/logo_redbull.png" },
+    { nome: "TNT Lata", preco: 10.00, categoria: "Energéticos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/energeticos/logo_tnt.jpg" },
+    { nome: "TNT Latão", preco: 13.00, categoria: "Energéticos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/energeticos/logo_tnt.jpg" },
+    { nome: "2 litros", preco: 15.00, categoria: "Energéticos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+
+//VINHOS
+    { nome: "Cantina da Serra 880ml", preco: 12, categoria: "Vinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/vinhos/cantina.png" },
+    { nome: "Cantina da Serra 1,5 l", preco: 20, categoria: "Vinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/vinhos/cantina.png" },
+    { nome: "Copo", preco: 8.00, categoria: "Vinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/vinhos/americano.webp" },
+    { nome: "Taça", preco: 12.00, categoria: "Vinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/vinhos/taca.webp" },
+    { nome: "Garrafa Galiotto 1 litro Seco", preco: 40.00, categoria: "Vinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/vinhos/gali_seco.png" },
+    { nome: "Garrafa Galiotto 1 litro Suave", preco: 40.00, categoria: "Vinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/vinhos/gali_suave.png" },
+
+//DRINKS
+    { nome: "Alexander (Domecq, licor de cacau, creme de leite e canela em pó)", preco: 18.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/alexander.jpg" },
+    { nome: "Batida - consultar sabores", preco: 5.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/batidas.jpeg" },
+    { nome: "Caipirinha Limão (Cachaça)", preco: 15.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/caipi.jpg" },
+    { nome: "Caipivodka Limão (Vodka)", preco: 18.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/caipi.jpg" },
+    { nome: "Cuba Libre (Coca Cola, gelo, limão e rum)", preco: 15.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/cuba.jpg" },
+
+//OUTROS
+    { nome: "Chopp de Vinho", preco: 12.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/pink.png" },
+    { nome: "Skol Beats", preco: 12.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/logo_sk_beats.jpg" },
+    { nome: "Ice Syn", preco: 5.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/logo_ice_syn.png" },
+    { nome: "Ice 51", preco: 10.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/logo_51_ice.jpg" },
+    { nome: "Ice Kovak", preco: 10.00, categoria: "Drinks", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/drinks/logo_ice_kovak.png" },
+    
+    
+//PORÇÕES        
+    { nome: "Aipim Frito - Pequena", preco: 19.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Aipim Frito - Grande", preco: 29.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Aipim com Calabresa - Pequena", preco: 25.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Aipim com Calabresa - Grande", preco: 43.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Aipim com Carne Seca - Pequena", preco: 29.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Aipim com Carne Seca - Grande", preco: 44.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita - Pequena", preco: 15, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita - Grande", preco: 29.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita com Bacon e Cheedar - Pequena", preco: 24.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita com Bacon e Cheedar - Grande", preco: 39.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita com Calabresa - Pequena", preco: 29.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita com Calabresa - Grande", preco: 44.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita com Carne Seca - Pequena", preco: 29.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita com Carne Seca - Grande", preco: 44.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita com Cheedar ou Catupiry - Pequena", preco: 19.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Frita com Cheedar ou Catupiry - Grande", preco: 34.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    
+    
+    { nome: "Alcatra acebolada ou com alho - Pequena", preco: 43.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Alcatra acebolada ou com alho - Grande", preco: 67.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Calabresa acebolada - Pequena", preco: 24.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Calabresa acebolada - Grande", preco: 39.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Coração acebolado - Pequena", preco: 35.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Coração acebolado - Grande", preco: 55.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Filé de frango acebolado ou com alho - Pequena", preco: 28.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Filé de frango acebolado ou com alho - Grande", preco: 52.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Linguiça mineira acebolada - Pequena", preco: 24.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Linguiça mineira acebolada - Grande", preco: 44.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Mista (carne bovina, linguiça, frango e batata) - Pequena", preco: 53.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Mista (carne bovina, linguiça, frango e batata) - Grande", preco: 73.90, categoria: "Porções", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    
+    
+//ESPETINHOS
+    { nome: "Espetinho de carne", preco: 11, categoria: "Espetinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/espetinhos/espetinho_carne.png" },
+    { nome: "Espetinho de carne com bacon", preco: 11, categoria: "Espetinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/espetinhos/espetinho_carne.png" },
+    { nome: "Espetinho de costela bovina", preco: 11, categoria: "Espetinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/espetinhos/espetinho_carne.png" },
+    { nome: "Espetinho de coração", preco: 10, categoria: "Espetinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/espetinhos/espetinho_coracao.jpg" },
+    { nome: "Espetinho de frango", preco: 9, categoria: "Espetinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/espetinhos/espetinhos.png" },
+    { nome: "Espetinho de frango com bacon", preco: 9, categoria: "Espetinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/espetinhos/espetinhos.png" },
+    { nome: "Salsichão", preco: 9, categoria: "Espetinhos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/espetinhos/salsichao.png" },
+    
+//INDIVIDUAIS
+    { nome: "Adicional de Bacon", preco: 5, categoria: "Petiscos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Adicional de Cheedar", preco: 5, categoria: "Petiscos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Caldos", preco: 13.90, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/individuais/caldos.jpg", pedirSabor: true  },                 
+    { nome: "Empadinha", preco: 5, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg", pedirSabor: true },
+
+    
+    { nome: "Pastel de Queijo", preco: 7.00, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/individuais/pasteis.png" },
+    { nome: "Pastel de Carne", preco: 7.00, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/individuais/pasteis.png" },        
+    { nome: "Pastel de Carne Seca", preco: 7.00, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/individuais/pasteis.png" },     
+    { nome: "Salgadinho - unidade", preco: 1, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg", pedirSabor: true },
+    { nome: "Tapa na Cara", preco: 6, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+  
+
+    { nome: "Queijo Mussarela em Conserva", preco: 4, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Queijo Provolone em Conserva", preco: 5, categoria: "Individuais", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },            
+
+//DIVERSOS    
+    { nome: "Amendoim Grelhaditos", preco: 2, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/grelhaditos.png" },
+    { nome: "Amendoim Japonês", preco: 2, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/japones.jpg" },
+    { nome: "Bala Hortelã - unidade", preco: 0.20, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/hortela.webp" },
+    { nome: "Bala Macia - unidade", preco: 0.20, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/macia.jpg" },
+    { nome: "Barra de Chocolate", preco: 10, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Chips", preco: 4, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Biscoito Recheado", preco: 5, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg", pedirSabor: true },
+    { nome: "Bombom", preco: 2, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Bubaloo", preco: 0.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/bubaloo.jpg" },
+    { nome: "Chiclets", preco: 0.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/chiclets.png" },
+    { nome: "Chocolate Baton", preco: 2.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/baton.jpeg" },
+    { nome: "Chocolate Trento", preco: 3.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/trento.jpeg", pedirSabor: true },
+    { nome: "Chocolate KitKat", preco: 5.00, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/kit.jpeg", pedirSabor: true },
+    { nome: "Chokito", preco: 4, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/chokito.jpg" },
+    { nome: "Doce de Abóbora", preco: 2.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Doce de Amendoim", preco: 3, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Halls", preco: 2.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/halls.webp",pedirSabor: true },
+    { nome: "Jujuba", preco: 1, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/jujuba.webp" },
+    { nome: "Mariola", preco: 1.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Mentos", preco: 3.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/mentos.jpeg", pedirSabor: true },
+    { nome: "Paçoca", preco: 0.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/pacoca.webp" },
+    { nome: "Pastilha de Menta", preco: 1.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Pingo Bel", preco: 3, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Pirulito", preco: 1, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/pirulito.jpg" },
+    { nome: "Salgadinhos Elma Chips", preco: 6, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/elma.jpg", pedirSabor: true },
+    { nome: "Salgadinhos Torcida", preco: 3.50, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/torcida.png", pedirSabor: true },
+    { nome: "Torresmo pacote", preco: 5, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/sem_imagem/sem_foto.jpg" },
+    { nome: "Sufflair", preco: 8, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/sufflair.jpeg" },
+    { nome: "Trident", preco: 3, categoria: "Diversos", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/diversos/trident.jpg", pedirSabor: true },
+    
+//CIGARROS    
+    { nome: "Black", preco: 25, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/black.jpg" },
+    { nome: "Camel (Amarelo ou Azul)", preco: 8.75, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/camel.jpg", pedirSabor: true },
+    { nome: "Camel Kretek (Berru ou Menthol", preco: 14.75, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/camel_kretek.jpg", pedirSabor: true },
+    { nome: "Cigarro de Palha Maço", preco: 15, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/palha.jpg" },
+    { nome: "Cigarro Egipt", preco: 6, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/egipt.jpg" },
+    { nome: "Dunhill Double Refresh", preco: 14, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/dunhill_double_refresh.jpg", pedirSabor: true },
+    { nome: "Dunhill (Vermelho ou Azul)", preco: 14, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/dunhill.jpg", pedirSabor: true },
+    { nome: "Dunhill On (Vermelho ou Azul)", preco: 11.25, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/dunhill_on.jpg", pedirSabor: true },
+    { nome: "Gudan Garan (Vermelho ou Verde", preco: 30, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/gudan.jpg" },
+    { nome: "Kent (Vermelho, Azul ou Prata)", preco: 11.50, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/kent.jpg", pedirSabor: true },
+    { nome: "Luck Strike (Vermelho ou Azul)", preco: 11.25, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/lucky_orig.jpg", pedirSabor: true },
+    { nome: "Luck Strike Double", preco: 11.75, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/lucky_doub.jpg" },
+    { nome: "Luck Strike Fresh (Verde ou Azul)", preco: 11.50, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/lucky_fresh.jpg", pedirSabor: true  },
+    { nome: "Luck Strike Patterson (Vermelho ou Azul)", preco: 7.50, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/lucky_pat.jpg", pedirSabor: true  },
+    { nome: "Marlboro (Red ou Gold)", preco: 12.50, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/marlboro.jpg", pedirSabor: true  },
+    { nome: "Marlboro Vista (Double Fusion ou Purple)", preco: 11.75, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/marb_vista.jpg" },
+    { nome: "Marlboro Ice Burst", preco: 14, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/marb_ice.jpg" },
+    { nome: "Marlboro Selection (Red, gold ou blue)", preco: 7.75, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/malrb_selec.jpg", pedirSabor: true  },
+    { nome: "Rothmans (Azul ou Vermelho)", preco: 9.25, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/rothmans.jpg", pedirSabor: true  },
+    { nome: "Rothmans Global (Azul ou Vermelho)", preco: 7.50, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/roth_glob.jpg", pedirSabor: true  },
+    { nome: "Sampoerna (Menta ou Canela)", preco: 16, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/sampo.jpg", pedirSabor: true  },
+    { nome: "Seda - caixinha", preco: 5, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/seda.jpg" },
+    { nome: "Seda - unidade", preco: 1, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/seda.jpg" },
+    { nome: "Tabaco", preco: 17.90, categoria: "cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/tabaco.jpg" },
+    { nome: "Winston (Azul ou Vermelho)", preco: 7.75, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/winston.jpg", pedirSabor: true  },
+    
+//ISQUEIROS
+    { nome: "Fósforo", preco: 1, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/fosforo.png"  },
+    { nome: "Isqueiro Chama", preco: 4, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/chama.jpeg"  },
+    { nome: "Isqueiro Bic Mini", preco: 6, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/mini.webp"  },
+    { nome: "Isqueiro Bic Maxi", preco: 8, categoria: "Cigarros", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/cigarros/maxi.jpg"  },                
+    
+//BINGO
+    { nome: "Bingo - R$ 1,00", preco: 1, categoria: "Bingo", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/bingo/bingo.webp" },
+    { nome: "Bingo - R$ 1,50", preco: 1.50, categoria: "Bingo", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/bingo/bingo.webp" },
+    { nome: "Bingo - R$ 2,00", preco: 2, categoria: "Bingo", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/bingo/bingo.webp" },
+    { nome: "Bingo - R$ 3,00", preco: 3, categoria: "Bingo", img: "/home/fabiene/Documentos/Pessoais/Tô Chegando/imagens_app/bingo/bingo.webp" },
+
+
+];
+
+let carrinho = [];
+
+// ========== FUNÇÕES AUXILIARES ==========
+
+function gerarChave(produto, sabor = "") {
+  return sabor ? `${produto.nome}-${sabor}` : produto.nome;
+}
+
+// ========== ADICIONAR ITEM ==========
+function adicionar(nomeProduto) {
+  const produto = produtos.find(p => p.nome === nomeProduto);
+  if (!produto) return;
+
+  const idQtd = `qtd-${produto.nome.replace(/\s/g, '')}`;
+  const idSabor = `sabor-${produto.nome.replace(/\s/g, '')}`;
+  const campoSabor = document.getElementById(idSabor);
+  const saborEscolhido = campoSabor ? campoSabor.value.trim() : "";
+
+  const chave = gerarChave(produto, saborEscolhido);
+  const item = carrinho.find(i => i.chave === chave);
+
+  if (item) {
+    item.qtd++;
+  } else {
+    carrinho.push({
+      chave,
+      nome: produto.nome,
+      preco: produto.preco,
+      categoria: produto.categoria,
+      sabor: saborEscolhido,
+      qtd: 1
+    });
+  }
+
+  atualizarResumo();
+  atualizarQuantidades();
+}
+
+// ========== REMOVER ITEM ==========
+function remover(nomeProduto) {
+  const produto = produtos.find(p => p.nome === nomeProduto);
+  if (!produto) return;
+
+  const idSabor = `sabor-${produto.nome.replace(/\s/g, '')}`;
+  const campoSabor = document.getElementById(idSabor);
+  const saborEscolhido = campoSabor ? campoSabor.value.trim() : "";
+
+  const chave = gerarChave(produto, saborEscolhido);
+  const index = carrinho.findIndex(i => i.chave === chave);
+
+  if (index !== -1) {
+    carrinho[index].qtd--;
+    if (carrinho[index].qtd <= 0) carrinho.splice(index, 1);
+  }
+
+  atualizarResumo();
+  atualizarQuantidades();
+}
+
+// ========== ATUALIZAR QUANTIDADES ==========
+function atualizarQuantidades() {
+  produtos.forEach(p => {
+    const idQtd = `qtd-${p.nome.replace(/\s/g, '')}`;
+    const span = document.getElementById(idQtd);
+    const idSabor = `sabor-${p.nome.replace(/\s/g, '')}`;
+    const campoSabor = document.getElementById(idSabor);
+    const sabor = campoSabor ? campoSabor.value.trim() : "";
+
+    const chave = gerarChave(p, sabor);
+    const item = carrinho.find(i => i.chave === chave);
+
+    if (span) span.textContent = item ? item.qtd : 0;
+  });
+}
+
+// ========== ATUALIZAR RESUMO ==========
+function atualizarResumo() {
+  const resumoDiv = document.getElementById("resumo");
+  const itensResumo = document.getElementById("itensResumo");
+  const subtotalEl = document.getElementById("subtotal");
+  const taxaEl = document.getElementById("taxa");
+  const totalFinalEl = document.getElementById("totalFinal");
+
+  if (carrinho.length === 0) {
+    resumoDiv.style.display = "none";
+    return;
+  }
+
+  resumoDiv.style.display = "block";
+
+  let subtotal = 0;
+  let grupos = { Bebidas: "", Petiscos: "", Cigarros: "", Diversos: "", Bingo: "" };
+
+  carrinho.forEach(item => {
+    const totalItem = item.preco * item.qtd;
+    subtotal += totalItem;
+
+    const linha = `• ${item.nome}${item.sabor ? ` (${item.sabor})` : ""} (${item.qtd}x) - R$ ${totalItem.toFixed(2)}<br>`;
+
+    if (["Cervejas","Sucos","Refrigerantes","Águas","Drinks","Energéticos","Vinhos","Destilados"].includes(item.categoria))
+      grupos.Bebidas += linha;
+    else if (["Espetinhos","Individuais","Porções"].includes(item.categoria))
+      grupos.Petiscos += linha;
+    else if (item.categoria === "Cigarros")
+      grupos.Cigarros += linha;
+    else if (item.categoria === "Bingo")
+      grupos.Bingo += linha;
+    else
+      grupos.Diversos += linha;
+  });
+
+  itensResumo.innerHTML = `
+    ${grupos.Bebidas ? "<h4>Bebidas</h4>" + grupos.Bebidas : ""}
+    ${grupos.Petiscos ? "<h4>Petiscos</h4>" + grupos.Petiscos : ""}
+    ${grupos.Cigarros ? "<h4>Cigarros</h4>" + grupos.Cigarros : ""}
+    ${grupos.Diversos ? "<h4>Diversos</h4>" + grupos.Diversos : ""}
+    ${grupos.Bingo ? "<h4>Bingo</h4>" + grupos.Bingo : ""}
+  `;
+
+  const taxa = document.getElementById("gorjeta").checked ? subtotal * 0.1 : 0;
+  const totalFinal = subtotal + taxa;
+
+  subtotalEl.textContent = subtotal.toFixed(2);
+  taxaEl.textContent = taxa.toFixed(2);
+  totalFinalEl.textContent = totalFinal.toFixed(2);
+}
+
+// ========== ENVIAR PEDIDO ==========
+function enviarPedido() {
+  const nomeCliente = document.getElementById("nomeCliente").value.trim();
+  if (!nomeCliente) return alert("Por favor, digite o nome do cliente antes de enviar o pedido!");
+  if (carrinho.length === 0) return alert("Selecione pelo menos um item!");
+
+  let mensagem = `*Pedido - Tô Chegando Bar* %0ACliente: *${nomeCliente}*%0A%0A`;
+  let subtotal = 0;
+  let grupos = { Bebidas: "", Petiscos: "", Cigarros: "", Diversos: "", Bingo: "" };
+
+  carrinho.forEach(item => {
+    const total = item.preco * item.qtd;
+    subtotal += total;
+    const linha = `• ${item.nome}${item.sabor ? ` (${item.sabor})` : ""} (${item.qtd}x) - R$ ${total.toFixed(2)}%0A`;
+
+    if (["Cervejas","Sucos","Refrigerantes","Águas","Drinks","Energéticos","Vinhos","Destilados"].includes(item.categoria))
+      grupos.Bebidas += linha;
+    else if (["Espetinhos","Individuais","Porções"].includes(item.categoria))
+      grupos.Petiscos += linha;
+    else if (item.categoria === "Cigarros")
+      grupos.Cigarros += linha;
+    else if (item.categoria === "Bingo")
+      grupos.Bingo += linha;
+    else
+      grupos.Diversos += linha;
+  });
+
+  for (let sec in grupos) {
+    if (grupos[sec]) mensagem += `*${sec}*%0A${grupos[sec]}%0A`;
+  }
+
+  const taxa = document.getElementById("gorjeta").checked ? subtotal * 0.1 : 0;
+  const totalFinal = subtotal + taxa;
+
+  mensagem += `*Total pedido:* R$ ${subtotal.toFixed(2)}%0A`;
+  mensagem += `*Taxa de serviço (10%):* R$ ${taxa.toFixed(2)}%0A`;
+  mensagem += `*Total com taxa:* R$ ${totalFinal.toFixed(2)}%0A%0AEnviado via cardápio online.`;
+
+  window.open(`https://wa.me/${numero}?text=${mensagem}`, "_blank");
+}
+
+// ========== GERAR MENU ==========
+function gerarMenu() {
+  const categorias = [
+    { nome: "Cervejas", gradiente: "linear-gradient(135deg, #1e2a3a, #334d66)" },
+    { nome: "Refrigerantes", gradiente: "linear-gradient(135deg, #1e2a3a, #334d66)" },
+    { nome: "Sucos", gradiente: "linear-gradient(135deg, #1e2a3a, #334d66)" },
+    { nome: "Águas", gradiente: "linear-gradient(135deg, #1e2a3a, #334d66)" },
+    { nome: "Energéticos", gradiente: "linear-gradient(135deg, #1e2a3a, #334d66)" },        
+    { nome: "Drinks", gradiente: "linear-gradient(135deg, #1e2a3a, #334d66)" },
+    { nome: "Vinhos", gradiente: "linear-gradient(135deg, #1e2a3a, #334d66)" },
+    { nome: "Destilados", gradiente: "linear-gradient(135deg, #1e2a3a, #334d66)" },
+    { nome: "Porções", gradiente: "linear-gradient(135deg, #3a2a1e, #665134)" },
+    { nome: "Espetinhos", gradiente: "linear-gradient(135deg, #3a2a1e, #665134)" }, 
+    { nome: "Individuais", gradiente: "linear-gradient(135deg, #3a2a1e, #665134)" },                   
+    { nome: "Diversos", gradiente: "linear-gradient(135deg, #3a2a1e, #665134)" },
+    { nome: "Cigarros", gradiente: "linear-gradient(135deg, #2d2d2d, #4f4f4f)" },
+    { nome: "Bingo", gradiente: "linear-gradient(135deg, #2aa35b, #19883f)" }
+  ];
+
+  const menuDiv = document.getElementById("menu");
+  let html = "";
+
+  categorias.forEach(cat => {
+    const itens = produtos.filter(p => p.categoria === cat.nome);
+    if (itens.length > 0) {
+      html += `<div class="categoria" style="background:${cat.gradiente};">
+        <h2 style="color:#ffcc00;">${cat.nome}</h2>
+        <div class="itens">`;
+
+      itens.forEach(p => {
+        const idQtd = `qtd-${p.nome.replace(/\s/g, '')}`;
+        const idSabor = `sabor-${p.nome.replace(/\s/g, '')}`;
+        html += `
+        <div class="item">
+          <img src="${p.img}" alt="${p.nome}">
+          <div class="item-info">
+            <div style="font-weight:bold;">${p.nome}</div>
+            <div style="color:#ffcc00;">R$ ${p.preco.toFixed(2)}</div>
+            ${p.pedirSabor ? `<input type="text" id="${idSabor}" placeholder="Digite a opção escolhida" style="margin-top:6px;">` : ""}
+          </div>
+          <div class="item-controles">
+            <button style="background:#ff0000;" onclick="remover('${p.nome}')">−</button>
+            <span id="${idQtd}">0</span>
+            <button style="background:#ffcc00; color:black;" onclick="adicionar('${p.nome}')">+</button>
+          </div>
+        </div>`;
+      });
+
+      html += `</div></div>`;
+    }
+  });
+
+  menuDiv.innerHTML = html;
+
+  // acordeão
+  document.querySelectorAll('.categoria h2').forEach(h2 => {
+    h2.addEventListener('click', () => {
+      const todas = document.querySelectorAll('.itens');
+      const esta = h2.nextElementSibling;
+      todas.forEach(div => {
+        if (div !== esta) {
+          div.style.height = '0';
+          div.style.padding = '0 10px';
+        }
+      });
+      if (esta.style.height && esta.style.height !== '0px') {
+        esta.style.height = esta.scrollHeight + 'px';
+        requestAnimationFrame(() => {
+          esta.style.height = '0';
+          esta.style.padding = '0 10px';
+        });
+      } else {
+        esta.style.height = esta.scrollHeight + 'px';
+        esta.style.padding = '10px';
+        esta.addEventListener('transitionend', function ajustarAltura() {
+          if (esta.style.height !== '0px') esta.style.height = 'auto';
+          esta.removeEventListener('transitionend', ajustarAltura);
+        });
+      }
+    });
+  });
+}
+
+gerarMenu();
+</script>
+
+  
+
+</body>
+</html>
+
