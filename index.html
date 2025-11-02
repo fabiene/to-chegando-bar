@@ -177,15 +177,19 @@
   <div class="container">
     <!-- LOGO -->
     <div style="text-align:center; margin-bottom:15px;">
-      <img src="../Logo2.png" alt="Logo Tô Chegando Bar" class="logo">
+      <img src="./Logo2.png" alt="Logo Tô Chegando Bar" class="logo">
       <h1>Tô Chegando Bar</h1>
       <p style="color:#ddd;">🍻 Escolha seus itens e envie o pedido pelo WhatsApp!</p>
+      <p style="color:#ddd;"> ⚠️Aplicativo exclusivo para atendimento presencial⚠️</p>
     </div>
 
-    <!-- CAMPO NOME -->
+    <!-- CAMPO NOME e MESA-->
     <label style="display:block; margin-bottom:10px;">
       <span> Nome do cliente:</span>
       <input type="text" id="nomeCliente" placeholder="Digite seu nome">
+      <p><p></p></p>
+      <span> Número da mesa:</span>
+      <input type="text" id="numMesa" placeholder="Digite o número de sua mesa">
     </label>
 
     <!-- MENU -->
@@ -220,7 +224,7 @@ const numero = "5524992139401";
 const produtos = [
   //CERVEJAS
 
-    { nome: "Amstel Litrão", preco: 14, categoria: "Cervejas", img: "../cervejas/logo_amstel.png" },
+    { nome: "Amstel Litrão", preco: 14, categoria: "Cervejas", img: "./cervejas/logo_amstel.png" },
     { nome: "Amstel 600ml", preco: 11, categoria: "Cervejas", img: "./cervejas/logo_amstel.png" },
     { nome: "Amstel Latão 473ml", preco: 8, categoria: "Cervejas", img: "./cervejas/logo_amstel.png" },
    
@@ -243,7 +247,7 @@ const produtos = [
     { nome: "Budweiser Latão 473ml", preco: 8, categoria: "Cervejas", img: "./cervejas/logo_budweiser.png" },
     { nome: "Budweiser Long Neck", preco: 9, categoria: "Cervejas", img: "./cervejas/logo_budweiser.png" }, 
     
-    { nome: "Caracu", preco: 11, categoria: "Cervejas", img: "./cervejas/logo_caracu.jpg" },
+    { nome: "Caracu", preco: 8, categoria: "Cervejas", img: "./cervejas/logo_caracu.jpg" },
     
     { nome: "Corona Latão 473ml", preco: 10, categoria: "Cervejas", img: "./cervejas/logo_corona.png" },
     { nome: "Corona Lonk Neck", preco: 10, categoria: "Cervejas", img: "./cervejas/logo_corona.png" },
@@ -257,14 +261,15 @@ const produtos = [
     
     { nome: "Imperio 300ml", preco: 5, categoria: "Cervejas", img: "./cervejas/logo_imperio.jpg" },
     { nome: "Imperio 600ml", preco: 11, categoria: "Cervejas", img: "./cervejas/logo_imperio.jpg" },
-    
+    { nome: "Imperio Latão 473ml", preco: 7, categoria: "Cervejas", img: "./cervejas/logo_imperio.jpg" },
+
     { nome: "Itaipava 300ml", preco: 5, categoria: "Cervejas", img: "./cervejas/logo_itaipava.png" },
     
     { nome: "Lokal Litrão", preco: 10, categoria: "Cervejas", img: "./cervejas/logo_lokal.png" },
     { nome: "Lokal 600ml", preco: 7, categoria: "Cervejas", img: "./cervejas/logo_lokal.png" },
     { nome: "Lokal Latão 473ml", preco: 5, categoria: "Cervejas", img: "./cervejas/logo_lokal.png" },
     
-    { nome: "Malzbier", preco: 9, categoria: "Cervejas", img: "./cervejas/logo_brah_malz.jpg" },
+    { nome: "Malzbier", preco: 8, categoria: "Cervejas", img: "./cervejas/logo_brah_malz.jpg" },
         
     { nome: "Original Litrão", preco: 15, categoria: "Cervejas", img: "./cervejas/logo_ant_original.png" },
     { nome: "Original 600ml", preco: 13, categoria: "Cervejas", img: "./cervejas/logo_ant_original.png" },
@@ -281,7 +286,7 @@ const produtos = [
     
 //REFRIGERANTES, SUCOS E ÁGUAS
 
-    { nome: "Refrigerante 200ml", preco: 3, categoria: "Refrigerantes", img: "./refrigerantes/refri_pet_200.jpeg", pedirSabor: true },
+    { nome: "Refrigerante 200ml", preco: 3,50, categoria: "Refrigerantes", img: "./refrigerantes/refri_pet_200.jpeg", pedirSabor: true },
     { nome: "Refrigerante 350ml", preco: 6, categoria: "Refrigerantes", img: "./refrigerantes/refri_lata.png", pedirSabor: true },
     { nome: "Refrigerante 600ml", preco: 8, categoria: "Refrigerantes", img: "./refrigerantes/refri_600.jpeg", pedirSabor: true },
     { nome: "Tônica 350ml", preco: 6, categoria: "Refrigerantes", img: "./refrigerantes/logo_tonica.jpeg" },
@@ -291,7 +296,7 @@ const produtos = [
     
     { nome: "Guaraviton", preco: 5, categoria: "Sucos", img: "./sucos/logo_guaraviton.png" },
     { nome: "H2OH 500ml", preco: 7, categoria: "Sucos", img: "./sucos/logo_h2oh.png" },
-    { nome: "Suco lata", preco: 7, categoria: "Sucos", img: "./sucos/logo_suco_lata.jpg", pedirSabor: true },
+    { nome: "Suco lata", preco: 8, categoria: "Sucos", img: "./sucos/logo_suco_lata.jpg", pedirSabor: true },
     { nome: "Refresco copo", preco: 2, categoria: "Sucos", img: "./sucos/logo_ativ.jpg", pedirSabor: true },
     
     { nome: "Água sem gás 500ml", preco: 3.00, categoria: "Águas", img: "./aguas/agua.jpg" },
@@ -304,9 +309,8 @@ const produtos = [
     { nome: "Alcatrão - dose", preco: 5.00, categoria: "Destilados", img: "./destilados/logo_alcatrao.png" },  
     { nome: "Amarula - cálice", preco: 10.00, categoria: "Destilados", img: "./destilados/marula.png" },
     { nome: "Bananinha - dose", preco: 6.00, categoria: "Destilados", img: "./destilados/bananinha.png" },
-    { nome: "Campari - dose", preco: 12.00, categoria: "Destilados", img: "./destilados/campari.jpg" },
+    { nome: "Campari - dose", preco: 15.00, categoria: "Destilados", img: "./destilados/campari.jpg" },
     { nome: "Canelinha - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
-    { nome: "Caninha da Roça Pet 500ml", preco: 7, categoria: "Destilados", img: "./destilados/caninha.png" },
     { nome: "Catuaba Selvagem - dose", preco: 5.00, categoria: "Destilados", img: "./destilados/catuaba.png" },
     { nome: "Contini - dose", preco: 7.00, categoria: "Destilados", img: "./destilados/contini.png" },
     { nome: "Domecq - tirinho", preco: 4.00, categoria: "Destilados", img: "./destilados/domecq.jpg" },
@@ -332,12 +336,12 @@ const produtos = [
     { nome: "Steinhager - dose", preco: 10.00, categoria: "Destilados", img: "./destilados/stein.jpg" },
     { nome: "Tequila - dose", preco: 15.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Trassado - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
-    { nome: "Whisky Ballantines (8 anos) - tirinho", preco: 18.00, categoria: "Destilados", img: "./destilados/ball.jpg" },
-    { nome: "Whisky Ballantines (8 anos) - dose", preco: 10.00, categoria: "Destilados", img: "./destilados/ball.jpg" },
-    { nome: "Whisky Red Label (8 anos) - tirinho", preco: 18.00, categoria: "Destilados", img: "./destilados/red.webp" },
-    { nome: "Whisky Red Label (8 anos) - dose", preco: 10.00, categoria: "Destilados", img: "./destilados/red.webp" },
-    { nome: "Whisky White Horse (8 anos) - tirinho", preco: 18.00, categoria: "Destilados", img: "./destilados/white.webp" },
-    { nome: "Whisky White Horse (8 anos) - dose", preco: 10.00, categoria: "Destilados", img: "./destilados/white.webp" },
+    { nome: "Whisky Ballantines (8 anos) - tirinho", preco: 10.00, categoria: "Destilados", img: "./destilados/ball.jpg" },
+    { nome: "Whisky Ballantines (8 anos) - dose", preco: 18.00, categoria: "Destilados", img: "./destilados/ball.jpg" },
+    { nome: "Whisky Red Label (8 anos) - tirinho", preco: 10.00, categoria: "Destilados", img: "./destilados/red.webp" },
+    { nome: "Whisky Red Label (8 anos) - dose", preco: 18.00, categoria: "Destilados", img: "./destilados/red.webp" },
+    { nome: "Whisky White Horse (8 anos) - tirinho", preco: 10.00, categoria: "Destilados", img: "./destilados/white.webp" },
+    { nome: "Whisky White Horse (8 anos) - dose", preco: 18.00, categoria: "Destilados", img: "./destilados/white.webp" },
     { nome: "Ypioca - tirinho", preco: 3.00, categoria: "Destilados", img: "./destilados/ypioca.webp" },
     { nome: "Ypioca - dose", preco: 6.00, categoria: "Destilados", img: "./destilados/ypioca.webp" },
     
@@ -350,14 +354,16 @@ const produtos = [
 //VINHOS
     { nome: "Cantina da Serra 880ml", preco: 12, categoria: "Vinhos", img: "./vinhos/cantina.png" },
     { nome: "Cantina da Serra 1,5 l", preco: 20, categoria: "Vinhos", img: "./vinhos/cantina.png" },
-    { nome: "Copo", preco: 8.00, categoria: "Vinhos", img: "./vinhos/americano.webp" },
-    { nome: "Taça", preco: 12.00, categoria: "Vinhos", img: "./vinhos/taca.webp" },
+    { nome: "Copo", preco: 8.00, categoria: "Vinhos", img: "./vinhos/americano.webp", pedirSabor: true },
+    { nome: "Taça", preco: 12.00, categoria: "Vinhos", img: "./vinhos/taca.webp", pedirSabor: true },
     { nome: "Garrafa Galiotto 1 litro Seco", preco: 40.00, categoria: "Vinhos", img: "./vinhos/gali_seco.png" },
     { nome: "Garrafa Galiotto 1 litro Suave", preco: 40.00, categoria: "Vinhos", img: "./vinhos/gali_suave.png" },
+    { nome: "Garrafa de Vinho Reservado 750ml", preco: 50.00, categoria: "Vinhos", img: "./vinhos/gali_suave.png", pedirSabor: true },
+
 
 //DRINKS
     { nome: "Alexander (Domecq, licor de cacau, creme de leite e canela em pó)", preco: 18.00, categoria: "Drinks", img: "./drinks/alexander.jpg" },
-    { nome: "Batida - consultar sabores", preco: 5.00, categoria: "Drinks", img: "./drinks/batidas.jpeg" },
+    { nome: "Batida - consultar sabores", preco: 5.00, categoria: "Drinks", img: "./drinks/batidas.jpeg", pedirSabor: true },
     { nome: "Caipirinha Limão (Cachaça)", preco: 15.00, categoria: "Drinks", img: "./drinks/caipi.jpg" },
     { nome: "Caipivodka Limão (Vodka)", preco: 18.00, categoria: "Drinks", img: "./drinks/caipi.jpg" },
     { nome: "Cuba Libre (Coca Cola, gelo, limão e rum)", preco: 15.00, categoria: "Drinks", img: "./drinks/cuba.jpg" },
@@ -366,8 +372,7 @@ const produtos = [
     { nome: "Chopp de Vinho", preco: 12.00, categoria: "Drinks", img: "./drinks/pink.png" },
     { nome: "Skol Beats", preco: 12.00, categoria: "Drinks", img: "./drinks/logo_sk_beats.jpg" },
     { nome: "Ice Syn", preco: 5.00, categoria: "Drinks", img: "./drinks/logo_ice_syn.png" },
-    { nome: "Ice 51", preco: 10.00, categoria: "Drinks", img: "./drinks/logo_51_ice.jpg" },
-    { nome: "Ice Kovak", preco: 10.00, categoria: "Drinks", img: "./drinks/logo_ice_kovak.png" },
+    { nome: "Ice Kovak (ou similar)", preco: 10.00, categoria: "Drinks", img: "./drinks/logo_ice_kovak.png" },
     
     
 //PORÇÕES        
@@ -390,11 +395,11 @@ const produtos = [
     
     
     { nome: "Alcatra acebolada ou com alho - Pequena", preco: 43.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
-    { nome: "Alcatra acebolada ou com alho - Grande", preco: 67.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
+    { nome: "Alcatra acebolada ou com alho - Grande", preco: 69.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Calabresa acebolada - Pequena", preco: 24.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Calabresa acebolada - Grande", preco: 39.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Coração acebolado - Pequena", preco: 35.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
-    { nome: "Coração acebolado - Grande", preco: 55.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
+    { nome: "Coração acebolado - Grande", preco: 59.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Filé de frango acebolado ou com alho - Pequena", preco: 28.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Filé de frango acebolado ou com alho - Grande", preco: 52.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Linguiça mineira acebolada - Pequena", preco: 24.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
@@ -406,7 +411,6 @@ const produtos = [
 //ESPETINHOS
     { nome: "Espetinho de carne", preco: 11, categoria: "Espetinhos", img: "./espetinhos/espetinho_carne.png" },
     { nome: "Espetinho de carne com bacon", preco: 11, categoria: "Espetinhos", img: "./espetinhos/espetinho_carne.png" },
-    { nome: "Espetinho de costela bovina", preco: 11, categoria: "Espetinhos", img: "./espetinhos/espetinho_carne.png" },
     { nome: "Espetinho de coração", preco: 10, categoria: "Espetinhos", img: "./espetinhos/espetinho_coracao.jpg" },
     { nome: "Espetinho de frango", preco: 9, categoria: "Espetinhos", img: "./espetinhos/espetinhos.png" },
     { nome: "Espetinho de frango com bacon", preco: 9, categoria: "Espetinhos", img: "./espetinhos/espetinhos.png" },
@@ -442,7 +446,7 @@ const produtos = [
     { nome: "Chiclets", preco: 0.50, categoria: "Diversos", img: "./diversos/chiclets.png" },
     { nome: "Chocolate Baton", preco: 2.50, categoria: "Diversos", img: "./diversos/baton.jpeg" },
     { nome: "Chocolate Trento", preco: 3.50, categoria: "Diversos", img: "./diversos/trento.jpeg", pedirSabor: true },
-    { nome: "Chocolate KitKat", preco: 5.00, categoria: "Diversos", img: "./diversos/kit.jpeg", pedirSabor: true },
+    { nome: "Chocolate KitKat", preco: 6.00, categoria: "Diversos", img: "./diversos/kit.jpeg", pedirSabor: true },
     { nome: "Chokito", preco: 4, categoria: "Diversos", img: "./diversos/chokito.jpg" },
     { nome: "Doce de Abóbora", preco: 2.50, categoria: "Diversos", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Doce de Amendoim", preco: 3, categoria: "Diversos", img: "./sem_imagem/sem_foto.jpg" },
@@ -463,25 +467,25 @@ const produtos = [
 //CIGARROS    
     { nome: "Black", preco: 25, categoria: "Cigarros", img: "./cigarros/black.jpg" },
     { nome: "Camel (Amarelo ou Azul)", preco: 8.75, categoria: "Cigarros", img: "./cigarros/camel.jpg", pedirSabor: true },
-    { nome: "Camel Kretek (Berru ou Menthol", preco: 14.75, categoria: "Cigarros", img: "./cigarros/camel_kretek.jpg", pedirSabor: true },
+    { nome: "Camel Kretek (Berry ou Menthol", preco: 14.75, categoria: "Cigarros", img: "./cigarros/camel_kretek.jpg", pedirSabor: true },
     { nome: "Cigarro de Palha Maço", preco: 15, categoria: "Cigarros", img: "./cigarros/palha.jpg" },
     { nome: "Cigarro Egipt", preco: 6, categoria: "Cigarros", img: "./cigarros/egipt.jpg" },
     { nome: "Dunhill Double Refresh", preco: 14, categoria: "Cigarros", img: "./cigarros/dunhill_double_refresh.jpg", pedirSabor: true },
     { nome: "Dunhill (Vermelho ou Azul)", preco: 14, categoria: "Cigarros", img: "./cigarros/dunhill.jpg", pedirSabor: true },
     { nome: "Dunhill On (Vermelho ou Azul)", preco: 11.25, categoria: "Cigarros", img: "./cigarros/dunhill_on.jpg", pedirSabor: true },
-    { nome: "Gudan Garan (Vermelho ou Verde", preco: 30, categoria: "Cigarros", img: "./cigarros/gudan.jpg" },
+    { nome: "Gudan Garan", preco: 30, categoria: "Cigarros", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Kent (Vermelho, Azul ou Prata)", preco: 11.50, categoria: "Cigarros", img: "./cigarros/kent.jpg", pedirSabor: true },
     { nome: "Luck Strike (Vermelho ou Azul)", preco: 11.25, categoria: "Cigarros", img: "./cigarros/lucky_orig.jpg", pedirSabor: true },
     { nome: "Luck Strike Double", preco: 11.75, categoria: "Cigarros", img: "./cigarros/lucky_doub.jpg" },
     { nome: "Luck Strike Fresh (Verde ou Azul)", preco: 11.50, categoria: "Cigarros", img: "./cigarros/lucky_fresh.jpg", pedirSabor: true  },
     { nome: "Luck Strike Patterson (Vermelho ou Azul)", preco: 7.50, categoria: "Cigarros", img: "./cigarros/lucky_pat.jpg", pedirSabor: true  },
     { nome: "Marlboro (Red ou Gold)", preco: 12.50, categoria: "Cigarros", img: "./cigarros/marlboro.jpg", pedirSabor: true  },
-    { nome: "Marlboro Vista (Double Fusion ou Purple)", preco: 11.75, categoria: "Cigarros", img: "./cigarros/marb_vista.jpg" },
+    { nome: "Marlboro Vista (Double Fusion ou Purple)", preco: 11.75, categoria: "Cigarros", img: "./cigarros/marb_vista.jpg", pedirSabor: true },
     { nome: "Marlboro Ice Burst", preco: 14, categoria: "Cigarros", img: "./cigarros/marb_ice.jpg" },
     { nome: "Marlboro Selection (Red, gold ou blue)", preco: 7.75, categoria: "Cigarros", img: "./cigarros/malrb_selec.jpg", pedirSabor: true  },
     { nome: "Rothmans (Azul ou Vermelho)", preco: 9.25, categoria: "Cigarros", img: "./cigarros/rothmans.jpg", pedirSabor: true  },
     { nome: "Rothmans Global (Azul ou Vermelho)", preco: 7.50, categoria: "Cigarros", img: "./cigarros/roth_glob.jpg", pedirSabor: true  },
-    { nome: "Sampoerna (Menta ou Canela)", preco: 16, categoria: "Cigarros", img: "./cigarros/sampo.jpg", pedirSabor: true  },
+    { nome: "Sampoerna (Menta ou Cravo)", preco: 16, categoria: "Cigarros", img: "./cigarros/sampo.jpg", pedirSabor: true  },
     { nome: "Seda - caixinha", preco: 5, categoria: "Cigarros", img: "./cigarros/seda.jpg" },
     { nome: "Seda - unidade", preco: 1, categoria: "Cigarros", img: "./cigarros/seda.jpg" },
     { nome: "Tabaco", preco: 17.90, categoria: "cigarros", img: "./cigarros/tabaco.jpg" },
@@ -498,6 +502,8 @@ const produtos = [
     { nome: "Bingo - R$ 1,50", preco: 1.50, categoria: "Bingo", img: "./bingo/bingo.webp" },
     { nome: "Bingo - R$ 2,00", preco: 2, categoria: "Bingo", img: "./bingo/bingo.webp" },
     { nome: "Bingo - R$ 3,00", preco: 3, categoria: "Bingo", img: "./bingo/bingo.webp" },
+    { nome: "Bingo - R$ 4,00", preco: 3, categoria: "Bingo", img: "./bingo/bingo.webp" },
+
 
 
 ];
@@ -633,9 +639,11 @@ function atualizarResumo() {
 function enviarPedido() {
   const nomeCliente = document.getElementById("nomeCliente").value.trim();
   if (!nomeCliente) return alert("Por favor, digite o nome do cliente antes de enviar o pedido!");
+  const numMesa = document.getElementById("numMesa").value.trim();
+  if (!numMesa) return alert("Por favor, digite o número da mesa antes de enviar o pedido!");
   if (carrinho.length === 0) return alert("Selecione pelo menos um item!");
 
-  let mensagem = `*Pedido - Tô Chegando Bar* %0ACliente: *${nomeCliente}*%0A%0A`;
+  let mensagem = `*Pedido - Tô Chegando Bar* %0ACliente: *${nomeCliente}* %0AMesa: *${numMesa}*%0A%0A`;
   let subtotal = 0;
   let grupos = { Bebidas: "", Petiscos: "", Cigarros: "", Diversos: "", Bingo: "" };
 
@@ -665,7 +673,7 @@ function enviarPedido() {
 
   mensagem += `*Total pedido:* R$ ${subtotal.toFixed(2)}%0A`;
   mensagem += `*Taxa de serviço opcional(10%):* R$ ${taxa.toFixed(2)}%0A`;
-  mensagem += `*Total com taxa:* R$ ${totalFinal.toFixed(2)}%0A%0AEnviado via cardápio online.`;
+  mensagem += `*Total com taxa:* R$ ${totalFinal.toFixed(2)}%0A%0APedido Enviado!!!`;
 
   window.open(`https://wa.me/${numero}?text=${mensagem}`, "_blank");
 }
