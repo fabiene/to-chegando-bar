@@ -183,7 +183,7 @@
       <p style="color:#ddd;"> ⚠️Aplicativo exclusivo para atendimento presencial⚠️</p>
     </div>
 
-    <!-- CAMPO NOME e MESA-->
+    <!-- CAMPO NOME -->
     <label style="display:block; margin-bottom:10px;">
       <span> Nome do cliente:</span>
       <input type="text" id="nomeCliente" placeholder="Digite seu nome">
@@ -219,7 +219,7 @@
 
 <script>
 const numero = "5524992139401";
-
+  
 // ========== PRODUTOS ==========
 const produtos = [
   //CERVEJAS
@@ -672,7 +672,7 @@ function enviarPedido() {
   const totalFinal = subtotal + taxa;
 
   mensagem += `*Total pedido:* R$ ${subtotal.toFixed(2)}%0A`;
-  mensagem += `*Taxa de serviço opcional(10%):* R$ ${taxa.toFixed(2)}%0A`;
+  mensagem += `*Taxa de serviço (10%):* R$ ${taxa.toFixed(2)}%0A`;
   mensagem += `*Total com taxa:* R$ ${totalFinal.toFixed(2)}%0A%0APedido Enviado!!!`;
 
   window.open(`https://wa.me/${numero}?text=${mensagem}`, "_blank");
@@ -768,4 +768,3 @@ gerarMenu();
 
 </body>
 </html>
-
