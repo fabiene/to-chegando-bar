@@ -312,7 +312,6 @@ const produtos = [
     { nome: "Bananinha - dose", preco: 6.00, categoria: "Destilados", img: "./destilados/bananinha.png" },
     { nome: "Campari - dose", preco: 15.00, categoria: "Destilados", img: "./destilados/campari.jpg" },
     { nome: "Canelinha - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
-    { nome: "Caninha da Roça Pet 500ml", preco: 7, categoria: "Destilados", img: "./destilados/caninha.png" },
     { nome: "Catuaba Selvagem - dose", preco: 5.00, categoria: "Destilados", img: "./destilados/catuaba.png" },
     { nome: "Contini - dose", preco: 7.00, categoria: "Destilados", img: "./destilados/contini.png" },
     { nome: "Domecq - tirinho", preco: 4.00, categoria: "Destilados", img: "./destilados/domecq.jpg" },
@@ -326,6 +325,7 @@ const produtos = [
     { nome: "Gim - dose", preco: 10.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Jeropiga - dose", preco: 6.00, categoria: "Destilados", img: "./destilados/jeropiga.webp" },
     { nome: "Jurubeba - dose", preco: 6.00, categoria: "Destilados", img: "./destilados/jurubeba.jpeg" },
+    { nome: "Malibu - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Mel - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Menta - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Paratudo - dose", preco: 5.00, categoria: "Destilados", img: "./destilados/paratudo.webp" },
@@ -338,6 +338,7 @@ const produtos = [
     { nome: "Steinhager - dose", preco: 10.00, categoria: "Destilados", img: "./destilados/stein.jpg" },
     { nome: "Tequila - dose", preco: 15.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Trassado - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
+    { nome: "Velho Barreiro - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Whisky Ballantines (8 anos) - tirinho", preco: 10.00, categoria: "Destilados", img: "./destilados/ball.jpg" },
     { nome: "Whisky Ballantines (8 anos) - dose", preco: 18.00, categoria: "Destilados", img: "./destilados/ball.jpg" },
     { nome: "Whisky Red Label (8 anos) - tirinho", preco: 10.00, categoria: "Destilados", img: "./destilados/red.webp" },
@@ -356,11 +357,11 @@ const produtos = [
 //VINHOS
     { nome: "Cantina da Serra 880ml", preco: 12, categoria: "Vinhos", img: "./vinhos/cantina.png" },
     { nome: "Cantina da Serra 1,5 l", preco: 20, categoria: "Vinhos", img: "./vinhos/cantina.png" },
-    { nome: "Copo", preco: 8.00, categoria: "Vinhos", img: "./vinhos/americano.webp", pedirSabor: true },
-    { nome: "Taça", preco: 12.00, categoria: "Vinhos", img: "./vinhos/taca.webp", pedirSabor: true },
+    { nome: "Copo (seco ou suave)", preco: 8.00, categoria: "Vinhos", img: "./vinhos/americano.webp", pedirSabor: true },
+    { nome: "Taça (seco ou suave)", preco: 12.00, categoria: "Vinhos", img: "./vinhos/taca.webp", pedirSabor: true },
     { nome: "Garrafa Galiotto 1 litro Seco", preco: 40.00, categoria: "Vinhos", img: "./vinhos/gali_seco.png" },
     { nome: "Garrafa Galiotto 1 litro Suave", preco: 40.00, categoria: "Vinhos", img: "./vinhos/gali_suave.png" },
-    { nome: "Garrafa Vinho Reserva 750ml", preco: 50.00, categoria: "Vinhos", img: "./sem_imagem/sem_foto.jpg", pedirSabor: true },
+    { nome: "Garrafa Vinho Reserva 750ml (seco ou suave)", preco: 50.00, categoria: "Vinhos", img: "./sem_imagem/sem_foto.jpg", pedirSabor: true },
   
 
 //DRINKS
@@ -377,7 +378,11 @@ const produtos = [
     { nome: "Ice Kovak (ou similar)", preco: 10.00, categoria: "Drinks", img: "./drinks/logo_ice_kovak.png" },
     
     
-//PORÇÕES        
+//PORÇÕES     
+    { nome: "Adicional de Cheedar ou Catupiry", preco: 5, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg", pedirSabor: true },
+    { nome: "Azeitona", preco: 12, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
+
+
     { nome: "Aipim Frito - Pequena", preco: 19.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Aipim Frito - Grande", preco: 29.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Aipim com Calabresa - Pequena", preco: 25.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
