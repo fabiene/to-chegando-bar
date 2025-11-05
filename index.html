@@ -67,6 +67,24 @@
     margin-top: 5px;
     font-size: 1em;
   }
+
+
+ /*SELEÇÃO DO NÚMERO DA MESA*/
+  select {
+  width: 250px;
+  padding: 10px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  appearance: none; /* Remove o estilo padrão do navegador */
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+  
 /*BOTÕES DE + E -*/
   button {
     width: 100%;
@@ -134,6 +152,16 @@
     border-radius: 10px;
   }
 
+  /*DATA E HORA*/
+  #clock {
+    font-size: 25px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+  }
+
   .whatsapp-float {
     position: fixed;
     bottom: 20px;
@@ -182,6 +210,25 @@
       <p style="color:#ddd;">🍻 Escolha seus itens e envie o pedido pelo WhatsApp!</p>
       <p style="color:#ddd;"> ⚠️Aplicativo exclusivo para atendimento presencial⚠️</p>
     </div>
+<div id="clock">Carregando...</div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const options = {
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            };
+            const date = now.toLocaleDateString('pt-BR', options);
+            const time = now.toLocaleTimeString('pt-BR');
+            document.getElementById('clock').innerHTML = `${date}<br>${time}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // inicializa ao carregar
+    </script>
 
     <!-- CAMPO NOME -->
     <label style="display:block; margin-bottom:10px;">
@@ -189,7 +236,19 @@
       <input type="text" id="nomeCliente" placeholder="Digite seu nome">
       <p><p></p></p>
       <span> Número da mesa:</span>
-      <input type="text" id="numMesa" placeholder="Digite o número de sua mesa">
+<select style="display:block; margin-bottom:10px;" id="numMesa">
+ 
+ <option value="" disabled selected>Selecione uma opção</option>
+  <option value="1">Mesa 1</option>
+  <option value="2">Mesa 2</option>
+  <option value="3">Mesa 3</option>
+  <option value="4">Mesa 4</option>
+  <option value="5">Mesa 5</option>
+  <option value="6">Mesa 6</option>
+  <option value="7">Mesa 7</option>
+  <option value="8">Mesa 8</option>
+
+  </select>    
     </label>
 
     <!-- MENU -->
@@ -644,13 +703,17 @@ function atualizarResumo() {
 
 // ========== ENVIAR PEDIDO ==========
 function enviarPedido() {
+  const dataHora = new Date().toLocaleString("pt-BR", {
+  dateStyle: "short",
+  timeStyle: "medium"
+});
   const nomeCliente = document.getElementById("nomeCliente").value.trim();
   if (!nomeCliente) return alert("Por favor, digite o nome do cliente antes de enviar o pedido!");
   const numMesa = document.getElementById("numMesa").value.trim();
   if (!numMesa) return alert("Por favor, digite o número da mesa antes de enviar o pedido!");
   if (carrinho.length === 0) return alert("Selecione pelo menos um item!");
 
-  let mensagem = `*Pedido - Tô Chegando Bar* %0ACliente: *${nomeCliente}* %0AMesa: *${numMesa}*%0A%0A`;
+  let mensagem = `*Pedido - Tô Chegando Bar* %0ACliente: *${nomeCliente}* %0AMesa: *${numMesa}*%0AData do Pedido: *${dataHora}*%0A%0A`;
   let subtotal = 0;
   let grupos = { Bebidas: "", Petiscos: "", Cigarros: "", Diversos: "", Bingo: "" };
 
